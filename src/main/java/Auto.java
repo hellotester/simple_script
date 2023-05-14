@@ -33,8 +33,6 @@ public class Auto {
     @FindBy(css = "video")
     public WebElement video;
 
-    @FindBy(css = ".popup-header")
-    public WebElement dig;
     static RemoteWebDriver chromeDriver;
 
     public static void main(String[] args) throws Exception {
