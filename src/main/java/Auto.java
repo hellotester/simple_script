@@ -9,7 +9,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
 import java.time.Duration;
+import java.util.Scanner;
 
 import static org.awaitility.Awaitility.await;
 
@@ -35,11 +37,34 @@ public class Auto {
 
     static RemoteWebDriver chromeDriver;
 
+    final static String tips = "check follow steps is to done.\n step1:login success. \n step2: Select the course and go to the Play page. " +
+            "\n step3: type y continue or type n exit.";
+
     public static void main(String[] args) throws Exception {
+
+        Runtime runtime = Runtime.getRuntime();
+        File dir = new File("E:\\codework\\auto\\auto\\target\\classes");
+        runtime.exec("cmd.exe start /k openChrome.cmd", null, dir);
         WebDriverManager.chromedriver().setup();
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setExperimentalOption("debuggerAddress", "localhost:9222");
         chromeDriver = new ChromeDriver(chromeOptions);
+        System.out.println(tips);
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String next = scanner.next();
+            if (next.equalsIgnoreCase("y")) {
+                break;
+            } else if (next.equalsIgnoreCase("n")) {
+                chromeDriver.quit();
+                runtime.exec("cmd.exe start /k clean.cmd",null, dir);
+                System.exit(0);
+                break;
+            }
+            System.out.println(tips);
+        }
+        System.out.println("automation script be ready.");
+
         Auto auto = new Auto();
         PageFactory.initElements(chromeDriver, auto);
         try {
